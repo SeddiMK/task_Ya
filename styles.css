@@ -21,18 +21,47 @@ body {
 	display: flex;
 	justify-content: space-around;
 	flex-wrap: wrap;
-	width: 100%;
-	max-width: 800px;
-	margin-bottom: 20px;
+	width: 211px;
+
+	height: 431px;
+
+	background-image: url('./images/stuf/dCounter.svg');
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+
+.shelves > div {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	width: fit-content;
+	max-width: 211px;
+	height: fit-content;
+}
+
+.shelves__one-shelf {
+	position: relative;
+	top: -4px;
+	max-height: 95px;
+}
+.shelves__two-shelf {
+	max-height: 95px;
+}
+.shelves__three-shelf {
+	max-height: 95px;
 }
 
 .product {
-	width: 100px;
-	height: 100px;
-	background-color: #e1e1e1;
+	/* background-color: #e1e1e1;
 	border: 2px solid #ccc;
-	border-radius: 10px;
-	margin: 10px;
+	border-radius: 10px; */
+
+	width: 100%;
+	height: 100%;
+	border: 2px solid #ccc;
+
 	cursor: grab;
 	transition: transform 0.3s ease;
 }
@@ -40,6 +69,11 @@ body {
 .product:active {
 	cursor: grabbing;
 	transform: scale(1.1);
+}
+
+svg.icon {
+	width: 100%;
+	height: auto;
 }
 
 .cart-area {
