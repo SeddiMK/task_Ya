@@ -2,20 +2,17 @@ const products = document.querySelectorAll('.product img')
 const cartArea = document.querySelector('.cart-area')
 const cart = document.getElementById('cart-wrp')
 const checkoutButton = document.getElementById('checkout-button')
-let cartItems = 0
-let draggedElement = null // Для хранения текущего перетаскиваемого элемента
-let touchClone = null // Клон элемента для тачскрина
-
-// Позиции для изображений в корзине
 const positions = ['left', 'center', 'right']
+
+let cartItems = 0
+let draggedElement = null
+let touchClone = null
 
 // Drag and Drop (для мыши)
 products.forEach(product => {
-	// События для мыши
 	product.addEventListener('dragstart', dragStart)
 	product.addEventListener('dragend', dragEnd)
 
-	// События для тачскрина
 	product.addEventListener('touchstart', touchStart)
 	product.addEventListener('touchmove', touchMove)
 	product.addEventListener('touchend', touchEnd)
@@ -49,7 +46,6 @@ function drop(event) {
 function touchStart(event) {
 	draggedElement = event.target
 
-	// Создаем временный клон элемента, чтобы двигать его с пальцем
 	touchClone = draggedElement.cloneNode(true)
 	touchClone.style.position = 'absolute'
 	touchClone.style.pointerEvents = 'none'
@@ -66,11 +62,10 @@ function touchMove(event) {
 	const touch = event.touches[0]
 	updateTouchClonePosition(touch)
 
-	// Проверяем, находится ли палец над корзиной
 	const element = document.elementFromPoint(touch.clientX, touch.clientY)
 
 	if (element && element.id === 'cart') {
-		cartArea.classList.add('hovered') // Добавляем эффект наведения
+		cartArea.classList.add('hovered')
 	} else {
 		cartArea.classList.remove('hovered')
 	}
@@ -80,17 +75,13 @@ function touchEnd(event) {
 	cart.classList.remove('hovered')
 
 	if (touchClone) {
-		// Определяем место касания
 		const touch = event.changedTouches[0]
 		const element = document.elementFromPoint(touch.clientX, touch.clientY)
-
-		console.log(draggedElement, element, 'draggedElement,element')
 
 		if (element && element.id === 'cart' && cartItems < 3) {
 			handleDrop(draggedElement)
 		}
 
-		// Удаляем временный клон
 		document.body.removeChild(touchClone)
 		touchClone = null
 	}
@@ -101,45 +92,39 @@ function touchEnd(event) {
 	}
 }
 
-// Обновляем позицию временного клона
 function updateTouchClonePosition(touch) {
 	touchClone.style.left = `${touch.clientX - touchClone.offsetWidth / 2}px`
 	touchClone.style.top = `${touch.clientY - touchClone.offsetHeight / 2}px`
 }
 
-// Обработка сброса элемента
 function handleDrop(draggedProduct) {
 	if (cartItems < 3 && draggedProduct) {
 		const productClone = draggedProduct.cloneNode(true)
 		productClone.removeAttribute('draggable')
 
-		console.log(draggedProduct, 'draggedProduct')
-
-		// Установить позицию в корзине
 		productClone.style.position = 'absolute'
 
-		if (positions[cartItems] === 'left') {
-			productClone.style.left = '0px'
-		} else if (positions[cartItems] === 'center') {
-			productClone.style.width = '56%'
-			productClone.style.height = '85%'
-			productClone.style.transform = `rotate(10deg)`
-		} else if (positions[cartItems] === 'right') {
+		if (
+			productClone.getAttribute('data-name') === 'product1' ||
+			productClone.getAttribute('data-name') === 'product2' ||
+			productClone.getAttribute('data-name') === 'product8'
+		) {
+			productClone.style.height = '80%'
+		}
+
+		if (
+			positions[cartItems] === 'right' &&
+			productClone.getAttribute('data-name') === 'product7'
+		) {
 			productClone.style.left = '50px'
-			productClone.style.width = '42%'
-			productClone.style.height = '54%'
-			productClone.style.transform = `rotate(-23deg)`
 		}
 
 		productClone.style.bottom = '0px'
 
-		// Динамически устанавливать z-index (чем больше cartItems, тем меньше z-index)
 		productClone.style.zIndex = `${1 + cartItems}`
 
-		// Добавить клон в корзину
 		cart.appendChild(productClone)
 
-		// Скрыть оригинал на полке
 		draggedProduct.style.visibility = 'hidden'
 
 		cartArea.classList.remove('hovered')
