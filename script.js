@@ -30,16 +30,24 @@ function dragStart(event) {
 
 function dragEnd(event) {
 	event.target.classList.remove('dragging')
+	cartArea.classList.remove('hovered')
 	draggedElement = null
 }
 
 function dragOver(event) {
 	event.preventDefault()
+	const element = document.elementFromPoint(event.clientX, event.clientY)
+	if (element && element.id === 'cart') {
+		cartArea.classList.add('hovered')
+	} else {
+		cartArea.classList.remove('hovered')
+	}
 }
 
 function drop(event) {
 	event.preventDefault()
 	handleDrop(draggedElement)
+	cartArea.classList.remove('hovered')
 }
 
 // Touch Events

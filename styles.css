@@ -13,6 +13,7 @@ body {
 	align-items: center;
 	height: 100vh;
 	background: #fff;
+	overflow: hidden;
 }
 
 .banner {
